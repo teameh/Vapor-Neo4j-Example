@@ -1,10 +1,21 @@
 import Vapor
+import Theo
 
 /// Register your application's routes here.
 public func routes(_ router: Router) throws {
     // Basic "It works" example
-    router.get { req in
-        return "It works!"
+    router.get { req -> String in
+
+        let client = try BoltClient()
+        // let client = try BoltClient()
+        let result = client.connectSync()
+
+        switch result {
+        case .failure(_):
+            return "Error while connecting to Neo4j"
+        case .success(_):
+            return "Connected to Neo4j!"
+        }
     }
     
     // Basic "Hello, world!" example
